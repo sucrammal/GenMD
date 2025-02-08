@@ -14,12 +14,17 @@ const Onboarding = ({ onStateUpdate }: { onStateUpdate: () => void }) => {
     }
 }
 
-const StartScreen = ({ onNext }: { onNext: () => void }) => (
-    <div id="start-container">
-       <img src="/assets/logo-large.png" alt="gen md logo" id="logo-large" />
-       <button className="action-btn" id="get-started-btn" onClick={onNext}>Get Started</button>
-    </div>
-);
+const StartScreen = ({ onNext }: { onNext: () => void }) => {
+
+    const largeLogo = "https://i.imgur.com/beh78fY.png"
+
+    return (
+        <div id="start-container">
+        <img src={largeLogo} alt="gen md logo" id="logo-large" />
+        <button className="action-btn" id="get-started-btn" onClick={onNext}>Get Started</button>
+     </div>
+    )
+};
 
 const BasicInfo = ({ onNext }: { onNext: () => void }) => {
     const [firstName, setFirstName] = useState("");

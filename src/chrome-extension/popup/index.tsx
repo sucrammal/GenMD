@@ -7,10 +7,14 @@ import Upload from "./components/Upload";
 import Chat from "./components/Chat";
 
 export const Popup = () => {
+  const regularGene = "https://i.imgur.com/sg1LGH6.png"; 
+  const typingGene = "https://i.imgur.com/sKwmAEL.png";
+
   // state: onboarding, dashboard: info, upload, chat
   const [state, setState] = useState("onboarding"); 
   const [dialogueText, setDialogueText] = useState("Hi, I’m Gene! I’m here to guide you in finding medical services covered by your plan or help you explore other available options.");
-  
+  const [gene, setGene] = useState(regularGene);
+
   let renderedComponent;
 
   switch(state){
@@ -22,7 +26,7 @@ export const Popup = () => {
     break;
     case 'upload': renderedComponent = <Upload />
     break;
-    case 'chat': renderedComponent = <Chat />
+    case 'chat': renderedComponent = <Chat setGeneImg={() => setGene(typingGene)} />
     break;
     default: renderedComponent = <Onboarding onStateUpdate={() => setState("dashboard")}/>
   }
@@ -42,7 +46,7 @@ export const Popup = () => {
             { dialogueText }
          </div>
 
-         <img src="/assets/gene_icon.png" alt="Gene icon" className="gene-overlay" />
+         <img src={gene} alt="Gene icon" className="gene-overlay" />
       </div>
     </div>
   );
