@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const Onboarding = () => {
-   const [screen, setScreen] = useState("healthInfo");
+   const [screen, setScreen] = useState("basicInfo");
 
     switch(screen) {
         case 'start': return <StartScreen onNext={() => setScreen("basicInfo")} />;
@@ -24,8 +24,10 @@ const StartScreen = ({ onNext }: { onNext: () => void }) => (
 );
 
 const BasicInfo = ({ onNext }: { onNext: () => void }) => {
-    const [fullName, setFullName] = useState("");
-    const [birthdate, setBirthdate] = useState<Date | null>(null);
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [number, setNumber] = useState("");
     const [zipCode, setZipCode] = useState("");
     const [preference, setPreference] = useState(1);
 
@@ -33,39 +35,52 @@ const BasicInfo = ({ onNext }: { onNext: () => void }) => {
         <div id="basic-info-container">
             <div id="basic-info-left">
                 <div className="input-container">
-                    <label>Full Name</label>
+                    <label>First name</label>
                     <input 
                         type="text"
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
                     />
                 </div>
 
                 <div className="input-container">
-                    <label>Birthdate:</label>
-                        <DatePicker
-                            selected={birthdate}
-                            onChange={(date: Date | null) => setBirthdate(date)}
-                            dateFormat="yyyy-MM-dd" // Customize date format
-                            showYearDropdown // Allow selecting year from a dropdown
-                            scrollableYearDropdown // Make year dropdown scrollable
-                            maxDate={new Date()} // Prevent selecting future dates
-                            className="custom-datepicker" // Add your own CSS
-                        />
+                    <label>Last name</label>
+                    <input 
+                        type="text"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                    />
                 </div>
 
                 <div className="input-container">
-                    <label>ZIP Code</label>
+                    <label>Email</label>
                     <input 
                         type="text"
-                        value={zipCode}
-                        onChange={(e) => setZipCode(e.target.value)}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
+
+                <div className="input-container">
+                    <label>Phone number</label>
+                    <input 
+                        type="text"
+                        value={number}
+                        onChange={(e) => setNumber(e.target.value)}
                     />
                 </div>
             </div>
             
             <div id="basic-info-right">
                 <div className="radio-group">
+                    <div className="input-container">
+                        <label>ZIP Code</label>
+                        <input 
+                            type="text"
+                            value={zipCode}
+                            onChange={(e) => setZipCode(e.target.value)}
+                        />
+                    </div>
                     <p>Appointment preference:</p>
                     <label>
                         <input 

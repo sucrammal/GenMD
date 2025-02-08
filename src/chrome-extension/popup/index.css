@@ -173,9 +173,9 @@ body {
 }
 
 .input-container input {
-    padding: 0.5em;
+    padding: 0.4em;
     border-radius: var(--border-radius); 
-    width: 16em !important;
+    width: 13em !important;
     border: 2px solid var(--gene-border-blue); 
 }
   
