@@ -1,16 +1,14 @@
 import { useState } from 'react';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
-const Onboarding = () => {
-   const [screen, setScreen] = useState("basicInfo");
+const Onboarding = ({ onStateUpdate }: { onStateUpdate: () => void }) => {
+   const [screen, setScreen] = useState("start");
 
     switch(screen) {
         case 'start': return <StartScreen onNext={() => setScreen("basicInfo")} />;
             
         case 'basicInfo': return <BasicInfo onNext={() => setScreen("healthInfo")} />;
         
-        case 'healthInfo': return <HealthInfo />;
+        case 'healthInfo': return <HealthInfo updateAppState={() => onStateUpdate()} />;
             
         default: return <StartScreen onNext={() => setScreen("basicInfo")} />;
     }
@@ -119,7 +117,7 @@ const BasicInfo = ({ onNext }: { onNext: () => void }) => {
     )
 }
 
-const HealthInfo = () => {
+const HealthInfo = ({ updateAppState }: { updateAppState: () => void }) => {
     const [comments, setComments] = useState("");
 
     const concernsList = [
@@ -170,7 +168,7 @@ const HealthInfo = () => {
                     rows={6} 
                 />
 
-                <button className="action-btn" onClick={(() => console.log("todo"))}>Create Profile</button>
+                <button className="action-btn" onClick={(() => updateAppState())}>Create Profile</button>
             </div>
         </div>
     )

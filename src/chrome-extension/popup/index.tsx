@@ -14,12 +14,17 @@ export const Popup = () => {
   let renderedComponent;
 
   switch(state){
-    case 'onboarding': renderedComponent = <Onboarding />
+    case 'onboarding': renderedComponent = <Onboarding onStateUpdate={() => setState("dashboard")}/>
+    break;
     case 'dashboard': renderedComponent = <Dashboard />
+    break;
     case 'info': renderedComponent = <Info />
+    break;
     case 'upload': renderedComponent = <Upload />
+    break;
     case 'chat': renderedComponent = <Chat />
-    default: renderedComponent = <Onboarding />
+    break;
+    default: renderedComponent = <Onboarding onStateUpdate={() => setState("dashboard")}/>
   }
 
   // TEMP USEEFFECT
