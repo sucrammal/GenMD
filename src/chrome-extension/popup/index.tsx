@@ -1,44 +1,27 @@
-import "../global.css";
+import "./index.css";
+import { useState, useEffect } from 'react';
+import Onboarding from "./components/Onboarding";
 
 export const Popup = () => {
-  const handleClick = () => {
-    if (chrome.runtime && chrome.runtime.sendMessage) {
-      chrome.runtime.sendMessage(
-        { action: "queryOpenAI", prompt: "Hello, OpenAI!" },
-        (response) => {
-          if (response.success) {
-            console.log("Response:", response.data);
-          } else {
-            console.error("Error:", response.error);
-          }
-        }
-      );
-    } else {
-      console.error(
-        "chrome.runtime or chrome.runtime.sendMessage is undefined"
-      );
-    }
-  };
+  const [dialogueText, setDialogueText] = useState("Hi, I’m Gene! I’m here to guide you in finding medical services covered by your plan or help you explore other available options.");
 
-  const startAutofill = () => {
-    if (chrome.tabs && chrome.tabs.query) {
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        if (tabs[0] && tabs[0].id) {
-          chrome.tabs.sendMessage(tabs[0].id, {
-            action: "startAutofillAction",
-          });
-        }
-      });
-    } else {
-      console.error("chrome.tabs or chrome.tabs.query is undefined");
-    }
-  };
+  // TEMP USEEFFECT
+  useEffect(() => {
+    setDialogueText("Hi, I’m Gene! I’m here to guide you in finding medical services covered by your plan or help you explore other available options."); 
+  }, [])
 
   return (
-    <div className="text-5xl p-10 font-extrabold">
-      <div>This is your popup.</div>
-      <button onClick={handleClick}>Send Message</button>
-      <button onClick={startAutofill}>Start Autofill</button>
+    <div className="App">
+      <div className="main-container">
+        <Onboarding />
+      </div>
+      <div className="gene-container">
+        <div className="gene-dialogue">
+            { dialogueText }
+         </div>
+
+         <img src="/assets/gene_icon.png" alt="Gene icon" className="gene-overlay" />
+      </div>
     </div>
   );
 };
