@@ -1,0 +1,1 @@
+import{j as e,c as t,r}from"./assets/global-XA3hIcbF.js";const s=()=>e.jsx("div",{className:"text-5xl p-10 font-extrabold",children:e.jsx("div",{children:"This is your popup."})});t(document.getElementById("root")).render(e.jsx(r.StrictMode,{children:e.jsx("div",{className:"bg-white w-[600px] h-[500px]",children:e.jsx(s,{})})}));
