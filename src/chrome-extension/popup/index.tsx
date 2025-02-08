@@ -1,22 +1,27 @@
-import "../global.css";
+import "./index.css";
+import { useState, useEffect } from 'react';
+import Onboarding from "./components/Onboarding";
 
 export const Popup = () => {
-  
-  chrome.runtime.sendMessage(
-    { action: "queryOpenAI", prompt: "Hello, OpenAI!" },
-    (response) => {
-      if (response.success) {
-        console.log("Response:", response.data);
-      } else {
-        console.error("Error:", response.error);
-      }
-    }
-  );
+  const [dialogueText, setDialogueText] = useState("Hi, I’m Gene! I’m here to guide you in finding medical services covered by your plan or help you explore other available options.");
 
+  // TEMP USEEFFECT
+  useEffect(() => {
+    setDialogueText("Hi, I’m Gene! I’m here to guide you in finding medical services covered by your plan or help you explore other available options."); 
+  }, [])
 
   return (
-    <div className="text-5xl p-10 font-extrabold">
-      <div>This is your popup.</div>
+    <div className="App">
+      <div className="main-container">
+        <Onboarding />
+      </div>
+      <div className="gene-container">
+        <div className="gene-dialogue">
+            { dialogueText }
+         </div>
+
+         <img src="/assets/gene_icon.png" alt="Gene icon" className="gene-overlay" />
+      </div>
     </div>
   );
 };

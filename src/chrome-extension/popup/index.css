@@ -1,0 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
+
+:root {
+    /* Color variables  */
+    --gene-light-blue: #D0E9FD;
+    --gene-blue: #ADD8FF;
+    --gene-yellow: #F5F7B6;
+    --gene-navy: #2A439B;
+    --gene-border-blue: #66B6FF;
+
+    /* Font size variables */
+
+    /* Misc variables */
+    --border-radius: 30px; 
+}
+  
+  /* Main CSS ==================================================================================== */
+body {
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+    font-family: 'Instrument Sans'; 
+}
+
+.main-container {
+    height: 19.75em; 
+    width: 32em;
+    border-radius: var(--border-radius);
+    box-shadow: 1px 1px 8px 1px rgba(0, 0, 0, 0.25);
+    background: white;
+}
+
+.gene-container {
+    width: 32em;
+    position: relative; 
+    display: inline-block;
+}
+
+.gene-dialogue {
+    max-width: 100%; 
+    width: fit-content;
+    word-wrap: break-word; 
+    min-height: 4em;
+    background-color: var(--gene-light-blue);
+    border: 3px solid var(--gene-border-blue);
+    margin-top: 1em;
+    border-radius: 1em;
+    font-size: 1em;
+    padding: 0.75em 4em 0.75em 0.75em;
+    color: var(--gene-navy); 
+}
+
+.gene-overlay {
+    position: absolute;
+    bottom: -100px;  
+    right: -100px;   
+    width: 200px; 
+    height: auto; 
+}
+
+.action-btn {
+    background: var(--gene-navy);
+    padding: 0.5em 1.5em; 
+    border-radius: var(--border-radius);
+    color: white;
+    font-weight: bold; 
+    border: none; 
+    font-size: 1em;
+    display: inline-block;
+    width: auto;
+    align-self: flex-start;
+    margin-top: 1em;
+}
+
+#get-started-btn {
+    margin: 0 auto;
+}
+
+.action-btn:hover {
+    cursor: pointer;
+}
+/* Onboarding CSS =================================================================================== */
+    .onboarding-container {
+    height: 100%;
+    width: 100%;
+    border-radius: var(--border-radius); 
+    padding: 0.75em; 
+}
+
+/* START SCREEN  ================================================*/
+#start-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    height: 100%;
+    flex-direction: column;
+}
+
+#logo-large {
+    width: 20em;
+    margin-bottom: 2em;
+}
+
+/* BASIC INFO SCREEN ================================================*/
+#basic-info-container {
+    display: grid;
+    grid-template-columns: 50% 50%; /* Two equal columns */ 
+    padding: 1.5em;
+    height: 90%;
+    gap: 2.5em;
+}
+
+#basic-info-left {
+    display: flex;
+    justify-content: center;
+    height: auto; /* Allow it to adjust based on content */
+    flex-direction: column; 
+    width: 100%; /* Ensure it adjusts properly */
+    max-width: 400px; /* Set a max-width to prevent excessive stretching */
+}
+
+#basic-info-right {
+    width: 100%; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center;
+}
+
+.input-container {
+    display: flex; 
+    flex-direction: column; 
+    margin-bottom: 0.5em;
+}
+
+.input-container label {
+    color: var(--gene-navy); 
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    gap: 0.5em; /* Adds spacing between radio button and text */
+    font-size: 1em;
+    margin-bottom: 0.5em;
+}
+
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Aligns radio buttons and text to the left */
+    gap: 0.5em;
+    margin-bottom: .75em;
+}
+
+.radio-group p {
+    font-size: 1em; 
+    color: var(--gene-navy);
+    margin: 0;
+}
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5em; /* Adds spacing between radio button and text */
+    font-size: 0.8em;
+    color: var(--gene-navy); 
+    white-space: nowrap; /* Prevents wrapping */
+}
+
+.radio-group input[type="radio"] {
+    margin: 0; /* Removes extra spacing */
+    transform: scale(1.2); /* Slightly enlarge radio buttons */
+    accent-color: #1E2A78;
+}
+
+.input-container input {
+    padding: 0.5em;
+    border-radius: var(--border-radius); 
+    width: 16em !important;
+    border: 2px solid var(--gene-border-blue); 
+}
+  
+/* HEALTH INFO SCREEN ================================================*/
+#health-info-container{
+    display: grid;
+    grid-template-columns: 50% 50%; /* Two equal columns */ 
+    padding: 1.5em;
+    height: 90%;
+}
+
+#health-info-container p {
+    font-weight: 400; 
+    font-size: 0.85em;
+    color: var(--gene-navy);
+}
+
+#health-info-left {
+
+}
+
+.concern-container {
+    font-family: Arial, sans-serif;
+    color: #1E2A78;
+}
+
+.concern-container p {
+    font-size: 1rem;
+}
+
+.concerns-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25em;
+    max-width: 400px;
+}
+
+.concern-btn {
+    background: var(--gene-blue);
+    color: white;
+    border: none;
+    font-weight: bold;
+    padding: 0.5em 1em;
+    border-radius: 20px;
+    font-size: 0.7em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    border: 2px solid var(--gene-border-blue); 
+}
+
+.concern-btn.selected {
+    background: var(--gene-border-blue); /* Darker blue for selected buttons */
+}
+
+#health-info-right {
+
+}
+
+#comments-input {
+    border-radius: 1em;
+    border: 2px solid var(--gene-border-blue); 
+    width: 100%;
+}
