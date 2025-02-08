@@ -121,5 +121,3 @@
 //         console.log("No autofill data found in storage.");
 //     }
 // });
-
-console.log("hello world")
