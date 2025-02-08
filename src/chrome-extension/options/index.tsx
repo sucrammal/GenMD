@@ -1,4 +1,3 @@
-import "../global.css";
 
 const Options = () => {
   return (
