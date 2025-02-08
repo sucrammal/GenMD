@@ -1,8 +1,7 @@
 import { OpenAI } from "openai";
-import { config } from 'dotenv'; config();
 
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY, // Use an environment variable
+    apiKey: import.meta.env.VITE_OPENAPI_KEY // Use an environment variable
   });
 
 const functions = [
