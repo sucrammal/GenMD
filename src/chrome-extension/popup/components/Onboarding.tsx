@@ -122,7 +122,7 @@ const HealthInfo = () => {
 
     const [selectedConcerns, setSelectedConcerns] = useState<string[]>([]);
 
-    const toggleConcern = (concern) => {
+    const toggleConcern = (concern:string) => {
         setSelectedConcerns((prev) => (
             prev.includes(concern)
                 ? prev.filter((item) => item !== concern) // Remove if already selected
