@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Header from "./Header";
 
 interface UserData {
   firstname: string;
@@ -59,7 +58,6 @@ const Onboarding = ({ onStateUpdate }: { onStateUpdate: () => void }) => {
 
   return (
     <>
-        <Header />
         { renderedComponent }
     </>
   )

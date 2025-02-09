@@ -23,6 +23,10 @@
 #header img {
     width: 7em;
 }
+
+#header img:hover {
+    cursor: pointer;
+}
   /* Main CSS ==================================================================================== */
 body {
     display: flex; 
@@ -327,4 +331,16 @@ body {
     height: 50%;
     background: var(--gene-yellow); 
     border-radius: var(--border-radius); 
+}
+
+/* INFO SCREEN  ===================================*/
+#info-view-container {
+    display: grid;
+    grid-template-columns: 50% 50%; /* Two equal columns */ 
+    padding: 0 1.5em 0 1.5em;
+    height: 80%;
+    gap: 2.5em;
+    background: var(--gene-blue); 
+    border-radius: var(--border-radius); 
+    margin: 0 1em 0 1em;
 }

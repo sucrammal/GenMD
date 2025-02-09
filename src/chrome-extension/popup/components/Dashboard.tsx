@@ -1,5 +1,3 @@
-import Header from "./Header";
-
 interface DashboardProps {
     onChatClick: () => void;
     onInfoClick: () => void;
@@ -9,7 +7,6 @@ interface DashboardProps {
   const Dashboard: React.FC<DashboardProps> = ({ onChatClick, onInfoClick, onUploadClick }) => {
     return (
         <>
-        <Header />
         <div id="dashboard-container">
             <div id="dashboard-left">
                 <img src="https://i.imgur.com/c4KLnYO.png" alt="chat image" />

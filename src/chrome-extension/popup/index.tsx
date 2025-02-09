@@ -5,13 +5,14 @@ import Dashboard from "./components/Dashboard";
 import Info from "./components/Info";
 import Upload from "./components/Upload";
 import Chat from "./components/Chat";
+import Header from "./components/Header";
 
 export const Popup = () => {
   const regularGene = "https://i.imgur.com/sg1LGH6.png"; 
   const typingGene = "https://i.imgur.com/sKwmAEL.png";
 
   // state: onboarding, dashboard: info, upload, chat
-  const [state, setState] = useState("onboarding"); 
+  const [state, setState] = useState("info"); 
   const [dialogueText, setDialogueText] = useState("Hi, I’m Gene! I’m here to guide you in finding medical services covered by your plan or help you explore other available options.");
   const [gene, setGene] = useState(regularGene);
 
@@ -28,7 +29,7 @@ export const Popup = () => {
       />
       ); 
       break;
-    case 'info': renderedComponent = <Info />
+    case 'info': renderedComponent = <Info onBackClick={() => setState("dashboard")}/>
       break;
     case 'upload': renderedComponent = <Upload />
       break;
@@ -45,13 +46,13 @@ export const Popup = () => {
   return (
     <div className="App">
       <div className="main-container">
+      <Header onBackClick={() => setState("dashboard")}/>
         { renderedComponent }
       </div>
       <div className="gene-container">
         <div className="gene-dialogue">
             { dialogueText }
          </div>
-
          <img src={gene} alt="Gene icon" className="gene-overlay" />
       </div>
     </div>
