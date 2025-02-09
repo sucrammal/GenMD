@@ -29,12 +29,12 @@ const Onboarding = ({ onStateUpdate }: { onStateUpdate: () => void }) => {
     setUserData((prev) => ({ ...prev, ...newData }));
   };
 
-  let renderedComponent; 
+  let renderedComponent;
 
   switch (screen) {
     case "start":
       renderedComponent = <StartScreen onNext={() => setScreen("basicInfo")} />;
-        break;
+      break;
     case "basicInfo":
       renderedComponent = (
         <BasicInfo
@@ -43,7 +43,7 @@ const Onboarding = ({ onStateUpdate }: { onStateUpdate: () => void }) => {
           onNext={() => setScreen("healthInfo")}
         />
       );
-        break;
+      break;
     case "healthInfo":
       renderedComponent = (
         <HealthInfo
@@ -52,17 +52,17 @@ const Onboarding = ({ onStateUpdate }: { onStateUpdate: () => void }) => {
           updateAppState={() => onStateUpdate()}
         />
       );
-        break; 
+      break;
     default:
       return <StartScreen onNext={() => setScreen("basicInfo")} />;
   }
 
   return (
     <>
-        <Header />
-        { renderedComponent }
+      <Header />
+      {renderedComponent}
     </>
-  )
+  );
 };
 
 const StartScreen = ({ onNext }: { onNext: () => void }) => {
@@ -230,19 +230,16 @@ const HealthInfo = ({
       });
     });
 
+    // Send a message to the background script with the user data
+    chrome.runtime.sendMessage(
+      { action: "saveUserData", data: userData },
+      (response) => {
+        console.log("Response from background:", response);
+      }
+    );
+
     updateAppState();
   };
-
-//   const autofill = () => {
-//     // Send a message to the content script to save the data in localStorage
-//     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-//       chrome.tabs.sendMessage(tabs[0].id!, {
-//         action: "startAutofillAction",
-//       });
-//     });
-
-//     updateAppState();
-//   };
 
   return (
     <div id="health-info-container">
