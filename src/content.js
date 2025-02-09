@@ -1,3 +1,23 @@
+const userData = JSON.parse(localStorage.getItem("userData"));
+
+if (userData) {
+	console.log("User data found:", userData);
+} else {
+	console.log("not found")
+}
+// chrome.runtime.sendMessage(
+// {
+// 	action: "sendState",
+// 	data: userData.state,
+// },
+// (response) => {
+// 	console.log("Sending message", response);
+// }
+// );
+chrome.storage.local.set({ userData: userData }, function () {
+	console.log("userData saved in chrome.storage");
+  });
+  
 // Function to simulate typing character by character in an input field
 function simulateTyping(field, value) {
     let index = 0;
@@ -116,16 +136,6 @@ function clickResultByTitle(title) {
     console.log(`No search result found with title: ${title}`);
 }
 
-// Function to start the autofill action
-function startAutofillAction() {
-    console.log("Starting Autofill Action...");
-    fillFields();  // Call the function to autofill the fields
-    setTimeout(() => {
-        console.log("About to simulate typing and search...");
-        simulateTypingAndSearch();
-    }, 2000); // Simulate typing and search after a delay
-}
-
 // Fetch user data from chrome.storage.local and send it to the popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "getUserData") {
@@ -172,13 +182,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "sendMessageAndSearchPrompt") {
         const { msg, search_prompt } = message.data;
 
-        console.log("Received reply and search prompt in content script:");
-        console.log("Message:", msg);
-        console.log("Search Prompt:", search_prompt);
+        // Ensure page is loaded before performing action
 		simulateTypingAndSearch(search_prompt);
-		console.log("searching")
-
-        // Send a response back to the background script (optional)
-        sendResponse({ status: "success", message: "Appointment data received and processed." });
-    }
+		// clickResultByTitle("Same-Day");
+        // sendResponse({ status: "success", message: "Appointment data received and processed." });
+    };
+       
+        // Return true to keep the message channel open for async response
+        return true;
 });
+

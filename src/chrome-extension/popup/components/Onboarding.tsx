@@ -9,6 +9,7 @@ interface UserData {
   preference: number;
   concerns: string[];
   comments: string;
+  state: number;
 }
 
 const Onboarding = ({ onStateUpdate }: { onStateUpdate: () => void }) => {
@@ -22,6 +23,7 @@ const Onboarding = ({ onStateUpdate }: { onStateUpdate: () => void }) => {
     preference: 1,
     concerns: [],
     comments: "",
+    state: 1,
   });
 
   const handleUserDataUpdate = (newData: Partial<UserData>) => {
@@ -56,11 +58,7 @@ const Onboarding = ({ onStateUpdate }: { onStateUpdate: () => void }) => {
       return <StartScreen onNext={() => setScreen("basicInfo")} />;
   }
 
-  return (
-    <>
-        { renderedComponent }
-    </>
-  );
+  return <>{renderedComponent}</>;
 };
 
 const StartScreen = ({ onNext }: { onNext: () => void }) => {
@@ -225,6 +223,13 @@ const HealthInfo = ({
       chrome.tabs.sendMessage(tabs[0].id!, {
         action: "saveUserData",
         userData: userData,
+      });
+    });
+
+    // fetch data from the local storage
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.sendMessage(tabs[0].id!, {
+        action: "sendMessageAndSearchPrompt",
       });
     });
 

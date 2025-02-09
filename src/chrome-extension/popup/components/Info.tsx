@@ -9,27 +9,18 @@ const Info = ({ onBackClick }: { onBackClick: () => void }) => {
   const [preference, setPreference] = useState<number | null>(null);
 
   // Load data from content.js
-  useEffect(() => {
-    chrome.runtime.sendMessage({ action: "getUserData" }, (response) => {
-      if (chrome.runtime.lastError) {
-        console.error(
-          "Error communicating with content script:",
-          chrome.runtime.lastError
-        );
-        return;
-      }
 
-      if (response?.success && response.userData) {
-        console.log("Received user data:", response.userData);
-        const userData = response.userData;
-        setFirstname(userData.firstname || "");
-        setLastname(userData.lastname || "");
-        setEmail(userData.email || "");
-        setNumber(userData.number || "");
-        setZipCode(userData.zipCode || "");
-        setPreference(userData.preference ?? null);
-      } else {
-        console.log("No user data received.");
+  useEffect(() => {
+    // Get data from chrome.storage when the component mounts
+    chrome.storage.local.get(["userData"], (result) => {
+      if (result !== undefined) {
+        console.log("Received user data:", result.userData);
+        setFirstname(result.userData.firstname || "");
+        setLastname(result.userData.lastname || "");
+        setEmail(result.userData.email || "");
+        setNumber(result.userData.number || "");
+        setZipCode(result.userData.zipCode || "");
+        setPreference(result.userData.preference ?? null);
       }
     });
   }, []);

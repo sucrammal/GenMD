@@ -32,6 +32,17 @@ export const Popup = () => {
   let renderedComponent;
 
   useEffect(() => {
+    // Get data from chrome.storage when the component mounts
+    chrome.storage.local.get(["userData"], (result) => {
+      if (result.userData.state !== undefined) {
+        console.log("state: " + result.userData.state);
+        if (result.userData.state == 1) {
+          setState("dashboard");
+        }
+      }
+    });
+  }, []); // Empty dependency array to run only once
+  useEffect(() => {
     bounceGene();
   }, [state]);
 
@@ -69,7 +80,9 @@ export const Popup = () => {
 
   switch (state) {
     case "onboarding":
-      renderedComponent = <Onboarding onStateUpdate={() => setState("dashboard")} />;
+      renderedComponent = (
+        <Onboarding onStateUpdate={() => setState("dashboard")} />
+      );
       break;
     case "dashboard":
       renderedComponent = (
@@ -90,7 +103,9 @@ export const Popup = () => {
       renderedComponent = <Chat setGeneImg={() => setGene(typingGene)} />;
       break;
     default:
-      renderedComponent = <Onboarding onStateUpdate={() => setState("dashboard")} />;
+      renderedComponent = (
+        <Onboarding onStateUpdate={() => setState("dashboard")} />
+      );
   }
 
   return (
