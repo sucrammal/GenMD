@@ -155,15 +155,12 @@ function clickResultByTitle() {
     if (filteredResults.length === 0) {
         console.log('No results found with "Circle Medical". Selecting a random result instead.');
     }
-
-    // Choose randomly from filtered results if available, otherwise from all results
-    const randomIndex = Math.floor(Math.random() * 2);
-    const selectedResult = (filteredResults.length > 0 ? filteredResults : results)[randomIndex]; // Prioritize filtered results
+    const selectedResult = (filteredResults.length > 0 ? filteredResults : results)[0]; // Prioritize filtered results
 
     localStorage.setItem("entered", JSON.stringify(2));
     console.log("Saved 'entered' in localStorage");
 
-    console.log("Random index:", randomIndex);
+    // console.log("Random index:", randomIndex);
     console.log("Selected result:", selectedResult.innerText);
 
     // Scroll to the result before clicking

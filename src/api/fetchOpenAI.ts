@@ -7,7 +7,7 @@ const openai = new OpenAI({
 
 // SAMPLE DATA: NEED TO GET 
 const userAreasOfConcern = ["mental health", "sexual health", "dental health"];
-const location = "02446"
+const location = "10027"
 const insurance = "Aetna"
 
 // Stores the previous 1-2 queries in case of follow-up questions from the user. 

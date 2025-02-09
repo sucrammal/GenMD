@@ -76,7 +76,7 @@ body {
 .gene-overlay {
     position: absolute;
     bottom: -175px;  
-    right: -175px;   
+    right: -100px;   
     width: 200px; 
     height: auto; 
 	z-index: 1000;
