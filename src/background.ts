@@ -19,7 +19,8 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     // Inject LLM with data and call it. 
     toolInference("I need to find a cardiologist in New York who accepts BlueCross insurance.")
     .then(appointment => {
-      const msg:string = appointment.message
+      const msg:string = appointment.message;
+      console.log(msg);
       const search_prompt:string = appointment.search_prompt;
       // Send to content.js
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {

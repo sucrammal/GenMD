@@ -7,7 +7,7 @@ import {
   MessageInput,
 } from "@chatscope/chat-ui-kit-react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
-import { fetchOpenAI } from "../../../api/fetchOpenAI";
+import { toolInference } from "../../../api/fetchOpenAI";
 
 const Chat = ({ setGeneImg }: { setGeneImg: () => void }) => {
   const [messages, setMessages] = useState([
@@ -22,16 +22,14 @@ const Chat = ({ setGeneImg }: { setGeneImg: () => void }) => {
     setMessages((prev) => [...prev, { message: text, sender: "user" }]);
 
     try {
-        const response = await fetchOpenAI(text);
-        console.log("AI Response:", response);
+        const response = await toolInference(text);
+        console.log("AI Response:", response.message);
     
         if(response){
             setMessages((prev) => [
                 ...prev,
                 { message: response.message, sender: "Gene" },
               ]);
-      
-            setMessages((prev) => [...prev, { message: response.message, sender: "Gene" }]);
         }
 
     } catch (error) {
