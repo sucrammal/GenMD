@@ -1,94 +1,23 @@
-# Chrome Extension Starter with Vite, React, TypeScript, and Tailwind CSS
-This project is a starter template for building modern Chrome extensions using Vite, React, TypeScript, and Tailwind CSS. It simplifies the setup so you can focus on building your extension's features.
+## Inspiration
+Healthcare is hard: especially here in America. As international students living away from home, we’re experiencing the challenges of navigating the complex healthcare system in the U.S. for the first time. The vast range of medical services in a place like NYC can make it incredibly difficult to find the best providers for our specific needs, especially those covered by our insurance plans. And so, we made GenMD to guide you through the process—helping you understand your health concerns, identify the right providers based on your info, and make appointments at trusted clinics.
 
-<div style="display: flex; justify-content: space-around">
-  <img src="https://github.com/user-attachments/assets/b2267b19-1618-4797-8e0e-a241697b92cf" alt="image 1" width="200"/>
-  <img src="https://github.com/user-attachments/assets/eb6304c9-afd7-4bfc-b9ce-8099531a66d9" alt="image 2" width="200"/>
-  <img src="https://github.com/user-attachments/assets/7808d29d-d1ca-4287-b82b-183ad7b6510a" alt="image 3" width="200"/>
-  <img src="https://github.com/user-attachments/assets/c2f328e2-f7d6-4e6d-a3ec-8e750625e0f8" alt="image 4" width="200"/>
-</div>
+## What it does
+Gene – the health assistant behind GenMD – is a browser extension that harnesses the power of LLMs to extract your insurance info from uploaded documents, speak with you to understand your needs, and make tool inferences to execute the right services, all while developing a context on your top areas of concern. Additionally, Gene recommends resources in cases of emergency, and acts as your go-to knowledge base, answering any general healthcare queries you have and providing recommendations. 
 
-## View tutorial on YouTube
- <a href="https://www.youtube.com/watch?v=jwDErziR1nE">
-    <img src="http://i.ytimg.com/vi/jwDErziR1nE/hqdefault.jpg" alt="YouTube video" width="200"/>
-  </a>
+## How we built it
+We started out by mapping out GenMD as a UX block diagram, before creating a higher fidelity mockup on Figma.
 
-## Features
-- **Fast reloading** develop UI faster, view the popup and options page
-- **Vite** for fast bundling and development
-- **React** for building interactive UI components
-- **TypeScript** for type-safe JavaScript development
-- **Tailwind CSS** for easy and responsive styling
-- **chrome-types** Chrome's API TS files for auto-completion 
+We then used React and Typescript to build the frontend and “backend” components, and used Vite to compile the files to prepare it for the Chrome Extensions environment. We stored all our Chrome and OpenAI API calls between two client-side event handlers, which interacted with a user’s Chrome web session and modified DOM elements of the user’s current browser tab. 
 
-## Installation
+## Challenges we ran into
+One of the biggest constraints was working within the limitations of a Chrome extension. Within this environment, there were inherently more complications with tracing stack calls, debugging our code, and fixing imports and packages after they was abstracted by the Vite compiler. We also ran into issues with persistently storing the user data, given Chrome Extensions temporary local storage. 
 
-### Clone this repository:
-```
-git clone https://github.com/omribarmats/chrome-extension-starter.git new-project
-```
-* Replace `new-project` with your project name
+## Accomplishments that we're proud of
+We were happy with the completeness of GenMD: we managed to explore and build out a ton of diverse features, especially given that this was our first time building an extension. 
 
-### Open the new directory:
-```
-cd new-project
-```
-### Install dependencies:
-```
-npm install
-```
-### Start the development server:
-```
-npm run dev
-```
-## Load the Extension
+## What we learned
+LLM tuning and tooling, agentic feedback loops, and Typescript (Linh and Marcus’s first time). 
 
-1. Run the build command: `npm run build.`
-2. Go to `chrome://extensions/` in your Chrome browser.
-3. Enable `Developer mode`.
-4. Click `Load unpacked` and select the `dist` folder from the project.
+## What's next for GenMD
+Fine-tuning or RAG to give Gene a dedicated and efficient healthcare knowledge base, more tooling to capture advanced user requests, persistent user data storage, integration with insurance provider APIs to keep provider network up-to-date, finish file and photo OCR parsing for healthcare documents. 
 
-## Development
-- Hot-reload enabled for easier development.
-- Modify your code in the src folder.
-- Tailwind CSS is already configured and ready to use.
-- Run `nmp run build` to implement changes to `dist` folder
-- Go on `chrome://extensions/` and click refresh `⟳`
-
-### How to change the popup? 
-- Go on `src/chrome-extension/popup/index.tsx`
-- Once changes are made open the terminal and run `nmp run build` then visit `chrome://extensions/` and click the refresh `⟳` button on your extension
-
-### How to change the options page? 
-- Go on `src/chrome-extension/options/index.tsx`
-- Once changes are made open the terminal and run `nmp run build` then visit `chrome://extensions/` and click the refresh `⟳` button on your extension
-
-- ### How to add a background script? 
-- Create a `background.ts` file inside the `src` folder
-- Go on `vite.config.ts` and add this line `background: resolve(__dirname, "src/background.ts"),` under `build.rollupOptions.input`
-- For example 
-```
- build: {
-    rollupOptions: {
-      input: {
-        popup: resolve(__dirname, "popup.html"),
-        options: resolve(__dirname, "options.html"),
-        background: resolve(__dirname, "src/background.ts"),
-      },
-      output: {
-        entryFileNames: "[name].js",
-      },
-    },
-  },
-```
-- Go on `manifest.json` and add this code:
-```
-  "background": {
-    "service_worker": "background.js",
-    "type": "module"
-  }
-``` 
-- Open the terminal and run `nmp run build` then visit `chrome://extensions/` and click the refresh `⟳` button on your extension
-
-## Contributing
-Feel free to fork the project and make improvements or submit bug reports or issues.
