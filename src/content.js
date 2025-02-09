@@ -1,5 +1,7 @@
 const userData = JSON.parse(localStorage.getItem("userData"));
 const enter_flag = JSON.parse(localStorage.getItem("entered"));
+
+
 if (userData) {
 	console.log("User data found:", userData);
 } else {
@@ -33,43 +35,65 @@ function simulateTyping(field, value) {
             field.dispatchEvent(new Event("change", { bubbles: true })); // Ensure websites detect the change
         }
     }
-
     typeCharacter(); // Start the typing simulation
 }
 
-// Function to fill the fields with autofill data (character by character)
 function fillFields() {
     console.log("fillFields function is running");
 
-    // Retrieve user data from localStorage
-    const userData = JSON.parse(localStorage.getItem("userData"));
+    // Retrieve user data from localStorage (fallback to hardcoded data)
+    const userData = {
+        "Zip Code Input": 10027,
+        "new-patient-email": "johnsmith@gmail.com",
+        "new-patient-first-name": "John",
+        "new-patient-last-name": "Smith",
+        "new-patient-phone": "3478119382",
+        "New Step Address Zip Code Input": 10027,
+        "Member ID Input": "W282092812" // Ensure this is correct
+    };
+    console.log("User data found:", userData);
 
-    if (userData) {
-        console.log("User data found:", userData);
+    // Track which fields have been filled
+    const filledFields = new Set();
 
-        // Loop through all the input fields on the page
-        document.querySelectorAll("input").forEach((field) => {
-            let fieldName = field.getAttribute("name") || field.getAttribute("id") || "";
+    const observer = new MutationObserver(() => {
+        // Iterate over user data keys (field IDs) and fill them
+        Object.keys(userData).forEach((fieldId) => {
+            const fieldValue = userData[fieldId];
+            const inputField = document.getElementById(fieldId) || document.querySelector(`[name="${fieldId}"]`);
 
-            if (fieldName) {
-                console.log(`Detected field: ${fieldName}`);
-            }
-
-            // If there's a value for the field, fill it character by character
-            let value = userData[fieldName];
-
-            if (value) {
-                console.log(`Filling ${fieldName} with value: ${value}`);
-                simulateTyping(field, value); // Simulate typing character by character
+            if (inputField && !filledFields.has(fieldId)) {
+                console.log(`✅ Found ${fieldId}, typing: ${fieldValue}`);
+                simulateTyping(inputField, fieldValue); // Use typing simulation
+                filledFields.add(fieldId); // Mark this field as filled
             }
         });
 
-        console.log("Total input fields:", document.querySelectorAll("input").length);
-        console.log("Hidden input fields:", document.querySelectorAll("input[type='hidden']").length);
-    } else {
-        console.log("No user data found in localStorage.");
-    }
+        // Handle Member ID input field
+        const memberInput = document.querySelector('input[name="Member ID Input"]');
+        if (memberInput && !filledFields.has("Member ID Input")) {
+            console.log("✅ Found Member ID Input, typing: W282092815");
+
+            // Ensure you're typing only the correct value
+            memberInput.focus();  // Focus the input
+            setTimeout(() => {
+                memberInput.value = 'W282092812'; // Ensure the correct value is entered
+                memberInput.dispatchEvent(new Event('input', { bubbles: true }));
+            }, 100); // Small delay before setting the value
+
+            filledFields.add("Member ID Input"); // Mark this field as filled
+        }
+
+        // Disconnect observer once all fields are filled
+        if (Object.keys(userData).every((fieldId) => filledFields.has(fieldId))) {
+            observer.disconnect();
+        }
+    });
+
+    // Start observing for dynamically added elements
+    observer.observe(document.body, { childList: true, subtree: true });
 }
+
 
 // Function to simulate typing in the Google search bar
 function simulateTypingAndSearch(field) {

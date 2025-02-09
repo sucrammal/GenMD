@@ -75,10 +75,11 @@ body {
 
 .gene-overlay {
     position: absolute;
-    bottom: -100px;  
-    right: -100px;   
+    bottom: -175px;  
+    right: -175px;   
     width: 200px; 
     height: auto; 
+	z-index: 1000;
 }
 
 .action-btn {

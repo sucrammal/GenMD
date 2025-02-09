@@ -115,7 +115,7 @@ export const Popup = () => {
         {renderedComponent}
       </div>
       <div className="gene-container">
-        <div className="gene-dialogue">{dialogueText}</div>
+        {dialogueText && <div className="gene-dialogue">{dialogueText}</div>}
         <img src={gene} alt="Gene icon" className="gene-overlay" />
       </div>
     </div>
