@@ -198,22 +198,23 @@ async function book_appointment(specialty: string, areaOfConcern: string[], loca
     });
   }
 
-  export async function parseUserText(extractedText: string) {
+  export async function parseUserText(extractedText: string, fieldsToExtract: string) {
     try 
     {
         const response = await openai.chat.completions.create({
             model: "gpt-4",
             messages: [
               { role: "system", content: "You are an AI assistant that extracts structured data from insurance documents." },
-              { role: "user", content: `Extract the following fields: Insurance ID, Network Organizations, Deductible, and Coverage Details from this text: ${extractedText}`},
+              { role: "user", content: `Extract the following fields into JSON format: ${fieldsToExtract} from this text: ${extractedText}. If the field cannot be found, put a blank string "" as the value.`},
             ]});
         
         const message = response.choices[0].message?.content || "";
+        const parsedData = JSON.parse(message);
         const search_prompt = "";
         const tool_emissions_id = "parsedDocsForProfileInfo";
 
         return {
-          message: message,
+          message: parsedData,
           search_prompt: search_prompt,
           tool_emission_id: tool_emissions_id
         };
