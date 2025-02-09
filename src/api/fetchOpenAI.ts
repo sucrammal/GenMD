@@ -99,15 +99,20 @@ export async function toolInference(prompt: string) {
 }
 
 // UPDATE: Params! 
-async function emergency_services(): Promise<{ message: string; search_prompt: string }> {
+async function emergency_services(): Promise<{ message: string; search_prompt: string; tool_emission_id: string}> {
     // Simulate a search for health services based on the provided parameters
+    const message = "If you are experiencing a mental health emergency, please call the National Suicide Prevention Lifeline at 1-800-273-8255. For health emergencies, please call 911 immediately.";
+    const search_prompt = "";
+    const tool_emission_id = "sendEmergencyInfo";
+    emitLLMEvent(message, search_prompt, tool_emission_id)
     return {
-        message: "If you are experiencing a mental health emergency, please call the National Suicide Prevention Lifeline at 1-800-273-8255. For health emergencies, please call 911 immediately.",
-        search_prompt: "Emergency health and mental health resource."
+        message: message,
+        search_prompt: search_prompt,
+        tool_emission_id: tool_emission_id
     }
 }
 
-async function book_appointment(specialty: string, areaOfConcern: string[], location: string, insurance: string): Promise<{ message: string; search_prompt: string }> {
+async function book_appointment(specialty: string, areaOfConcern: string[], location: string, insurance: string): Promise<{ message: string; search_prompt: string; tool_emission_id: string}> {
     try {
       // Logic for booking an appointment, e.g., calling an API or querying a database to schedule the appointment
       // Example: A mock response for demonstration
@@ -117,11 +122,17 @@ async function book_appointment(specialty: string, areaOfConcern: string[], loca
         location: location,
         insurance: insurance,
         message: `Looking up your ${specialty} appointment near ${location} covered under ${insurance}!`,
-        search_prompt: `${insurance} covered ${specialty} appointments ${areaOfConcern}` // fix later
+        search_prompt: `${insurance} covered ${specialty} appointments ${areaOfConcern}`, // fix later
+        tool_emission_id: "sendMessageAndSearchPrompt"
       };
+      emitLLMEvent(appointmentConfirmation.message, appointmentConfirmation.search_prompt, appointmentConfirmation.tool_emission_id)
       
       // You can replace this mock response with an actual API request or database query.
-      return {message: appointmentConfirmation.message, search_prompt: appointmentConfirmation.search_prompt};
+      return {
+        message: appointmentConfirmation.message, 
+        search_prompt: appointmentConfirmation.search_prompt,
+        tool_emission_id: appointmentConfirmation.tool_emission_id
+      };
 
     } catch (error) {
       console.error("Error finding appointment:", error);
@@ -129,7 +140,7 @@ async function book_appointment(specialty: string, areaOfConcern: string[], loca
     }
   }
 
-  async function general_health_inquiry(inquiry:string): Promise<{message: string, search_prompt: string}> {
+  async function general_health_inquiry(inquiry:string): Promise<{message: string; search_prompt: string; tool_emission_id: string}> {
     const generalInquiryContext = `You are an AI health assistant tasked with providing accurate and efficient medical information to your user. Pasted below will the user's general health query, and their most recent previous context/queries. You are to use your existing knowledge base and return a short and efficient response. At the end, ask the user if you can help them book a new appointment THAT IS RELEVANT TO THEIR INQUIRY or give them more information on the subject. USER QUERY: ${inquiry}. CONTEXT: ${previousQueriesAndContext}`;
     
     try 
@@ -145,9 +156,15 @@ async function book_appointment(specialty: string, areaOfConcern: string[], loca
             previousQueriesAndContext.shift();
           }
         }
+        
+        const message = response.choices[0].message?.content || "";
+        const search_prompt = "";
+        const tool_emissions_id = "sendMessageAndHealthInfo"
+
         return {
-          message: response.choices[0].message?.content || "", 
-          search_prompt: ""
+          message: message,
+          search_prompt: search_prompt,
+          tool_emission_id: tool_emissions_id
         };
     } 
     catch (error) 
@@ -155,4 +172,28 @@ async function book_appointment(specialty: string, areaOfConcern: string[], loca
         console.error("OpenAI API error:", error);
         throw error;
     }
+  }
+
+  function emitLLMEvent(message: string, search_prompt: string, tool_emission_id:string): void {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (message == null || search_prompt == null || tool_emission_id == null) {
+        console.error("Emission inputs null");
+        throw Error;
+      }
+      if (tabs[0] && tabs[0].id) {
+        chrome.tabs.sendMessage(
+          tabs[0].id,
+          {
+            action: tool_emission_id,
+            data: {
+              msg: message,
+              search_prompt: search_prompt,
+            },
+          },
+          (response) => {
+            console.log("Response from content script:", response);
+          }
+        );
+      }
+    });
   }
