@@ -1,5 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
-
+html {
+    background: none !important;  /* Ensures full transparency */
+    margin: 0;
+    padding: 0;
+    border: none !important;
+    box-shadow: none !important;
+    overflow: hidden;
+    height: 27em; 
+    width: 30em; 
+}
 :root {
     /* Color variables  */
     --gene-light-blue: #D0E9FD;
@@ -30,19 +39,18 @@
 }
   /* Main CSS ==================================================================================== */
 body {
-    display: flex; 
-    justify-content: center;
-    align-items: center;
-    height: 100vh; 
     font-family: 'Instrument Sans'; 
+    background: transparent !important; 
 }
 
+.App {
+    /* background: red; */
+}
 .main-container {
-    height: 19.75em; 
-    width: 32em;
+    height: 20em; 
+    width: 38.5em;
     border-radius: var(--border-radius);
     box-shadow: 1px 1px 8px 1px rgba(0, 0, 0, 0.25);
-    background: white;
 }
 
 .gene-container {
@@ -61,7 +69,7 @@ body {
     margin-top: 1em;
     border-radius: 1em;
     font-size: 1em;
-    padding: 0.75em 4em 0.75em 0.75em;
+    padding: 0.75em 7em 0.75em 0.75em;
     color: var(--gene-navy); 
 }
 
@@ -398,6 +406,6 @@ body {
   
   /* Slower bounce effect */
   .bounce {
-    animation: bounce 1.5s ease-in-out infinite; /* 🔥 Increased to 1.5s */
+    animation: bounce 2s ease-in-out infinite; 
   }
   
