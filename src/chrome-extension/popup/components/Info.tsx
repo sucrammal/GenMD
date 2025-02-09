@@ -12,6 +12,7 @@ const Info = ({ onBackClick } : {onBackClick: () => void }) => {
     <>
     <div id="info-view-container">
            <div id="basic-info-left">
+            <p>Update information</p>
                <div className="input-container">
                    <label>First name</label>
                    <input
@@ -57,7 +58,7 @@ const Info = ({ onBackClick } : {onBackClick: () => void }) => {
                </div>
 
                <div className="radio-group">
-                   <p>Appointment preference:</p>
+                   <label>Appointment preference:</label>
                    <label>
                        <input
                            type="radio"
