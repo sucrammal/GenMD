@@ -226,13 +226,6 @@ const HealthInfo = ({
       });
     });
 
-    // fetch data from the local storage
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.tabs.sendMessage(tabs[0].id!, {
-        action: "sendMessageAndSearchPrompt",
-      });
-    });
-
     // Send a message to the background script with the user data
     chrome.runtime.sendMessage(
       { action: "saveUserData", data: userData },

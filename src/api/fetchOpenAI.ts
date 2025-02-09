@@ -122,7 +122,7 @@ async function book_appointment(specialty: string, areaOfConcern: string[], loca
         location: location,
         insurance: insurance,
         message: `Looking up your ${specialty} appointment near ${location} covered under ${insurance}!`,
-        search_prompt: `${insurance} covered ${specialty} appointments ${areaOfConcern}`, // fix later
+        search_prompt: `${insurance} covered ${specialty} appointments circlemedical`, // fix later
         tool_emission_id: "sendMessageAndSearchPrompt"
       };
       emitLLMEvent(appointmentConfirmation.message, appointmentConfirmation.search_prompt, appointmentConfirmation.tool_emission_id)
