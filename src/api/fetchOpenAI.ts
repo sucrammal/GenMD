@@ -4,34 +4,32 @@ const openai = new OpenAI({
     apiKey: import.meta.env.VITE_OPENAPI_KEY // Use an environment variable
   });
 
+// SAMPLE DATA: 
+const userAreasOfConcern = ["mental health", "sexual health", "dental health"];
+const location = "02446"
+const insurance = "Aetna"
+
 const tools = [
     {
       type: "function", 
-      name: "find_health_services",
+      name: "emergency_services",
       description: "Recommends emergency services or suicide hotlines based on the user's request.",
-      parameters: {
-        type: "object",
-        properties: {
-          location: { type: "string", description: "The user's location to help find local services." },
-          insurance: { type: "string", description: "The user's insurance information." },
-          specialty: { type: "string", description: "The medical specialty or emergency service needed." },
-        },
-        required: ["location", "specialty"], 
-      },
     },
     {
       type: "function", 
       name: "book_appointment",
-      description: "Books a local medical or dental appointment with a healthcare provider.",
+      description: "Books a local medical appointment of some specialty with a healthcare provider covered under the user's insurance.",
       parameters: {
         type: "object",
         properties: {
-          location: { type: "string", description: "The location where the appointment should be booked." },
-          doctor: { type: "string", description: "The doctor's name or specialty." },
-          date: { type: "string", description: "The desired appointment date." },
-          time: { type: "string", description: "The desired appointment time." },
+          specialty: { type: "string", description: "The doctor's name or specialty." },
+          areaOfConcern: {
+            type: "string",
+            enum: userAreasOfConcern, // Restrict the LLM to their selected userAreasOfConcern. 
+            description: "The user's indicated health concerns or priorities",
+          },
         },
-        required: ["location", "doctor", "date", "time"], 
+        required: ["specialty", "areaOfConcern"], 
       },
     },
   ];
@@ -74,12 +72,11 @@ export async function toolInference(prompt: string) {
       }
       
       // Handle the response based on the function name returned by GPT
-      if (toolCall === "find_health_services") {
-        const { location, insurance, specialty } = JSON.parse(toolArgs);
-        return await searchHealthServices(location, insurance, specialty); // Async call to search for health services
+      if (toolCall === "emergency_services") {
+        return await emergency_services(); // Async call to search for health services
       } else if (toolCall === "book_appointment") {
-        const { location, doctor, date, time } = JSON.parse(toolArgs);
-        return await bookAppointment(location, doctor, date, time); // Async call to book an appointment
+        const { specialty, areaOfConcern } = JSON.parse(toolArgs);
+        return await bookAppointment(specialty, areaOfConcern, location, insurance); // Async call to book an appointment
       } else {
         throw new Error("Unrecognized function call.");
       }
@@ -92,48 +89,29 @@ export async function toolInference(prompt: string) {
 
 
 // UPDATE: Params! 
-async function searchHealthServices(location: string, insurance: string, specialty: string) {
+async function emergency_services() {
     // Simulate a search for health services based on the provided parameters
-    console.log(`Searching for health services in ${location} with insurance ${insurance} and specialty ${specialty}`);
-    
-    // Mocked response
     return {
-        services: [
-            {
-                name: "General Hospital",
-                address: "123 Main St, Anytown, USA",
-                phone: "555-1234",
-                specialty: specialty,
-                acceptsInsurance: insurance ? true : false,
-            },
-            {
-                name: "Specialty Clinic",
-                address: "456 Elm St, Othertown, USA",
-                phone: "555-5678",
-                specialty: specialty,
-                acceptsInsurance: insurance ? true : false,
-            },
-        ],
-    };
+        message: "If you are experiencing a mental health emergency, please call the National Suicide Prevention Lifeline at 1-800-273-8255. For health emergencies, please call 911 immediately.",
+    }
 }
 
-async function bookAppointment(location: string, doctor: string, date: string, time: string) {
+async function bookAppointment(specialty: string, areaOfConcern: string[], location: string, insurance: string) {
     try {
       // Logic for booking an appointment, e.g., calling an API or querying a database to schedule the appointment
       // Example: A mock response for demonstration
       const appointmentConfirmation = {
-        appointmentId: "12345",
+        specialty: specialty,
+        areaOfConcern: areaOfConcern,
         location: location,
-        doctor: doctor,
-        date: date,
-        time: time,
-        message: `Your appointment with Dr. ${doctor} at ${location} has been booked for ${date} at ${time}.`,
+        insurance: insurance,
+        message: `Looking up your ${specialty} appointment near ${location} covered under ${insurance}!`,
       };
   
       // You can replace this mock response with an actual API request or database query.
       return appointmentConfirmation;
     } catch (error) {
-      console.error("Error booking appointment:", error);
+      console.error("Error finding appointment:", error);
       throw error; // Rethrow or handle as needed
     }
   }
