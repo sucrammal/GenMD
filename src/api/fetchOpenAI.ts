@@ -26,7 +26,7 @@ const tools = [
           areaOfConcern: {
             type: "string",
             enum: userAreasOfConcern, // Restrict the LLM to their selected userAreasOfConcern. 
-            description: "The user's indicated health concerns or priorities",
+            description: "The user's indicated health concerns or priorities in the prompt.",
           },
         },
         required: ["specialty", "areaOfConcern"], 
@@ -87,16 +87,16 @@ export async function toolInference(prompt: string) {
 
 }
 
-
 // UPDATE: Params! 
-async function emergency_services() {
+async function emergency_services(): Promise<{ message: string; search_prompt: string }> {
     // Simulate a search for health services based on the provided parameters
     return {
         message: "If you are experiencing a mental health emergency, please call the National Suicide Prevention Lifeline at 1-800-273-8255. For health emergencies, please call 911 immediately.",
+        search_prompt: "Emergency health and mental health resource."
     }
 }
 
-async function bookAppointment(specialty: string, areaOfConcern: string[], location: string, insurance: string) {
+async function bookAppointment(specialty: string, areaOfConcern: string[], location: string, insurance: string): Promise<{ message: string; search_prompt: string }> {
     try {
       // Logic for booking an appointment, e.g., calling an API or querying a database to schedule the appointment
       // Example: A mock response for demonstration
@@ -106,10 +106,12 @@ async function bookAppointment(specialty: string, areaOfConcern: string[], locat
         location: location,
         insurance: insurance,
         message: `Looking up your ${specialty} appointment near ${location} covered under ${insurance}!`,
+        search_prompt: `${specialty} appointments ${areaOfConcern}` // fix later
       };
-  
+      
       // You can replace this mock response with an actual API request or database query.
-      return appointmentConfirmation;
+      return {message: appointmentConfirmation.message, search_prompt: appointmentConfirmation.search_prompt};
+
     } catch (error) {
       console.error("Error finding appointment:", error);
       throw error; // Rethrow or handle as needed
