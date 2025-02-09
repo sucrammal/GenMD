@@ -4,7 +4,7 @@ const openai = new OpenAI({
     apiKey: import.meta.env.VITE_OPENAPI_KEY // Use an environment variable
   });
 
-const functions = [
+const tools = [
     {
       type: "function", 
       name: "find_health_services",
@@ -22,7 +22,7 @@ const functions = [
     {
       type: "function", 
       name: "book_appointment",
-      description: "Books a local appointment with a healthcare provider.",
+      description: "Books a local medical or dental appointment with a healthcare provider.",
       parameters: {
         type: "object",
         properties: {
@@ -57,26 +57,28 @@ export async function toolInference(prompt: string) {
     try {
       // Get the response from GPT-4 with function call inference
       const response = await openai.chat.completions.create({
-        model: "gpt-4",
+        model: "gpt-4o",
         messages: [{ role: "user", content: prompt }],
         temperature: 0,
-        functions: functions, // Include the corrected function definitions here
+        functions: tools, // Include the corrected function definitions here
         function_call: "auto", // Let GPT decide on function to call
       });
   
       // Get the top inferred tool call. 
-      const toolCall = response.choices[0]?.message.tool_calls?.[0];
-  
-      if (!toolCall) {
+      console.log("Response: " + JSON.stringify(response));
+      const toolCall = response.choices[0]?.message.function_call?.name;
+      const toolArgs = response.choices[0]?.message.function_call?.arguments;
+      
+      if (!toolCall || !toolArgs) {
         throw new Error("No valid tool call or arguments found in response.");
       }
-  
+      
       // Handle the response based on the function name returned by GPT
-      if (toolCall.function.name === "find_health_services") {
-        const { location, insurance, specialty } = JSON.parse(toolCall.function.arguments);
+      if (toolCall === "find_health_services") {
+        const { location, insurance, specialty } = JSON.parse(toolArgs);
         return await searchHealthServices(location, insurance, specialty); // Async call to search for health services
-      } else if (toolCall.function.name === "book_appointment") {
-        const { location, doctor, date, time } = JSON.parse(toolCall.function.arguments);
+      } else if (toolCall === "book_appointment") {
+        const { location, doctor, date, time } = JSON.parse(toolArgs);
         return await bookAppointment(location, doctor, date, time); // Async call to book an appointment
       } else {
         throw new Error("Unrecognized function call.");
