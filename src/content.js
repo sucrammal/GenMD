@@ -52,14 +52,14 @@ function fillFields() {
 }
 
 // Function to simulate typing in the Google search bar
-function simulateTypingAndSearch() {
+function simulateTypingAndSearch(field) {
     const searchInput = document.querySelector("textarea[name='q']"); // Google search bar
     console.log("Search input found:", searchInput);
 
     if (searchInput) {
         searchInput.focus(); // Focus on the input field
         searchInput.value = ""; // Clear the input field
-        let text = "Princess Polly"; // The text to type
+        let text = field; // The text to type
         let index = 0;
 
         function typeCharacter() {
@@ -175,11 +175,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         console.log("Received reply and search prompt in content script:");
         console.log("Message:", msg);
         console.log("Search Prompt:", search_prompt);
-
-        // Perform actions with the received data
-        // For example, update the DOM or trigger a search
-        document.body.style.backgroundColor = "orange"; // Example action
-        console.log("Updated background color and logged search prompt.");
+		simulateTypingAndSearch(search_prompt);
+		console.log("searching")
 
         // Send a response back to the background script (optional)
         sendResponse({ status: "success", message: "Appointment data received and processed." });
