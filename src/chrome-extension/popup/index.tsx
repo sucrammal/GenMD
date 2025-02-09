@@ -12,7 +12,7 @@ export const Popup = () => {
   const typingGene = "https://i.imgur.com/sKwmAEL.png";
 
   // state: onboarding, dashboard: info, upload, chat
-  const [state, setState] = useState("chat");
+  const [state, setState] = useState("onboarding");
   const [dialogueText, setDialogueText] = useState("");
   const [gene, setGene] = useState(regularGene);
 
