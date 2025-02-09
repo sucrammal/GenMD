@@ -20,14 +20,20 @@ export const Popup = () => {
   switch(state){
     case 'onboarding': renderedComponent = <Onboarding onStateUpdate={() => setState("dashboard")}/>
     break;
-    case 'dashboard': renderedComponent = <Dashboard />
-    break;
+    case 'dashboard': renderedComponent = (
+      <Dashboard 
+        onChatClick={() => setState("chat")} 
+        onInfoClick={() => setState("info")} 
+        onUploadClick={() => setState("upload")}
+      />
+      ); 
+      break;
     case 'info': renderedComponent = <Info />
-    break;
+      break;
     case 'upload': renderedComponent = <Upload />
-    break;
+      break;
     case 'chat': renderedComponent = <Chat setGeneImg={() => setGene(typingGene)} />
-    break;
+      break;
     default: renderedComponent = <Onboarding onStateUpdate={() => setState("dashboard")}/>
   }
 
