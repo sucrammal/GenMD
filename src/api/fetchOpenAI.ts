@@ -5,7 +5,7 @@ const openai = new OpenAI({
     dangerouslyAllowBrowser: true
   });
 
-// SAMPLE DATA: 
+// SAMPLE DATA: NEED TO GET 
 const userAreasOfConcern = ["mental health", "sexual health", "dental health"];
 const location = "02446"
 const insurance = "Aetna"
@@ -122,7 +122,7 @@ async function book_appointment(specialty: string, areaOfConcern: string[], loca
         location: location,
         insurance: insurance,
         message: `Looking up your ${specialty} appointment near ${location} covered under ${insurance}!`,
-        search_prompt: `${insurance} covered ${specialty} appointments circlemedical`, // fix later
+        search_prompt: `${insurance} covered ${specialty} appointments circlemedical`, // BETTER INFO INPUTS
         tool_emission_id: "sendMessageAndSearchPrompt"
       };
       emitLLMEvent(appointmentConfirmation.message, appointmentConfirmation.search_prompt, appointmentConfirmation.tool_emission_id)
@@ -196,4 +196,32 @@ async function book_appointment(specialty: string, areaOfConcern: string[], loca
         );
       }
     });
+  }
+
+  export async function parseUserText(extractedText: string) {
+    try 
+    {
+        const response = await openai.chat.completions.create({
+            model: "gpt-4",
+            messages: [
+              { role: "system", content: "You are an AI assistant that extracts structured data from insurance documents." },
+              { role: "user", content: `Extract the following fields: Insurance ID, Network Organizations, Deductible, and Coverage Details from this text: ${extractedText}`},
+            ]});
+        
+        const message = response.choices[0].message?.content || "";
+        const search_prompt = "";
+        const tool_emissions_id = "parsedDocsForProfileInfo";
+
+        return {
+          message: message,
+          search_prompt: search_prompt,
+          tool_emission_id: tool_emissions_id
+        };
+    } 
+    catch (error) 
+    {
+        console.error("OpenAI API error:", error);
+        throw error;
+    }
+
   }
