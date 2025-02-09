@@ -1,17 +1,27 @@
 import { useState } from 'react';
+import Header from './Header';
 
 const Onboarding = ({ onStateUpdate }: { onStateUpdate: () => void }) => {
    const [screen, setScreen] = useState("start");
+    let renderedComponent; 
 
     switch(screen) {
-        case 'start': return <StartScreen onNext={() => setScreen("basicInfo")} />;
-            
-        case 'basicInfo': return <BasicInfo onNext={() => setScreen("healthInfo")} />;
-        
-        case 'healthInfo': return <HealthInfo updateAppState={() => onStateUpdate()} />;
-            
-        default: return <StartScreen onNext={() => setScreen("basicInfo")} />;
+        case 'start': renderedComponent = <StartScreen onNext={() => setScreen("basicInfo")} />
+        break;
+        case 'basicInfo': renderedComponent = <BasicInfo onNext={() => setScreen("healthInfo")} />
+        break;
+        case 'healthInfo': renderedComponent = <HealthInfo updateAppState={() => onStateUpdate()} />
+        break;
+        default: renderedComponent = <StartScreen onNext={() => setScreen("basicInfo")} />;
     }
+
+    return (
+        <>
+            <Header />
+            { renderedComponent}
+        </>
+    )
+    
 }
 
 const StartScreen = ({ onNext }: { onNext: () => void }) => {
@@ -116,7 +126,7 @@ const BasicInfo = ({ onNext }: { onNext: () => void }) => {
                         I don’t mind
                     </label>
                 </div>
-                <button className="action-btn" onClick={onNext}>Continue</button>
+                <button className="action-btn" onClick={() => onNext()}>Continue</button>
             </div>
         </div>
     )
