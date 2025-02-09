@@ -133,6 +133,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 });
 
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    console.log('Message received in content script:', message);
+  
+    if (message.color) {
+      document.body.style.backgroundColor = message.color;
+    }
+  
+    if (message.message) {
+      console.log(message.message);
+    }
+  
+    // Send a response back to the background script
+    sendResponse({ status: 'Success', receivedData: message });
+  });
+
 // Listen for the message from popup.js to save user data to localStorage
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "saveUserData") {
