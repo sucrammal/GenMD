@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Header from "./Header";
 
 interface UserData {
   firstname: string;
@@ -28,31 +29,40 @@ const Onboarding = ({ onStateUpdate }: { onStateUpdate: () => void }) => {
     setUserData((prev) => ({ ...prev, ...newData }));
   };
 
+  let renderedComponent; 
+
   switch (screen) {
     case "start":
-      return <StartScreen onNext={() => setScreen("basicInfo")} />;
-
+      renderedComponent = <StartScreen onNext={() => setScreen("basicInfo")} />;
+        break;
     case "basicInfo":
-      return (
+      renderedComponent = (
         <BasicInfo
           userData={userData}
           onDataChange={handleUserDataUpdate}
           onNext={() => setScreen("healthInfo")}
         />
       );
-
+        break;
     case "healthInfo":
-      return (
+      renderedComponent = (
         <HealthInfo
           userData={userData}
           onDataChange={handleUserDataUpdate}
           updateAppState={() => onStateUpdate()}
         />
       );
-
+        break; 
     default:
       return <StartScreen onNext={() => setScreen("basicInfo")} />;
   }
+
+  return (
+    <>
+        <Header />
+        { renderedComponent }
+    </>
+  )
 };
 
 const StartScreen = ({ onNext }: { onNext: () => void }) => {
@@ -223,16 +233,16 @@ const HealthInfo = ({
     updateAppState();
   };
 
-  const autofill = () => {
-    // Send a message to the content script to save the data in localStorage
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.tabs.sendMessage(tabs[0].id!, {
-        action: "startAutofillAction",
-      });
-    });
+//   const autofill = () => {
+//     // Send a message to the content script to save the data in localStorage
+//     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+//       chrome.tabs.sendMessage(tabs[0].id!, {
+//         action: "startAutofillAction",
+//       });
+//     });
 
-    updateAppState();
-  };
+//     updateAppState();
+//   };
 
   return (
     <div id="health-info-container">
@@ -261,10 +271,7 @@ const HealthInfo = ({
           rows={6}
         />
         <button className="action-btn" onClick={handleSaveData}>
-          Create Profiles
-        </button>
-        <button className="action-btn" onClick={autofill}>
-          autofill
+          Create Profile
         </button>
       </div>
     </div>
