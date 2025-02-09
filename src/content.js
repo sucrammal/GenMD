@@ -126,6 +126,16 @@ function startAutofillAction() {
     }, 2000); // Simulate typing and search after a delay
 }
 
+// Fetch user data from chrome.storage.local and send it to the popup
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === "getUserData") {
+		console.log("fetching")
+        localStorage.getItem("userData", JSON.stringify(userData));
+        console.log("User data saved to localStorage:", userData);
+    }
+});
+
+
 // Listen for the message from popup.js to start the autofill action
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "startAutofillAction") {
