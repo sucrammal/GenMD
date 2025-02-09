@@ -107,7 +107,7 @@ async function bookAppointment(specialty: string, areaOfConcern: string[], locat
         location: location,
         insurance: insurance,
         message: `Looking up your ${specialty} appointment near ${location} covered under ${insurance}!`,
-        search_prompt: `${specialty} appointments ${areaOfConcern}` // fix later
+        search_prompt: `${insurance} covered ${specialty} appointments ${areaOfConcern}` // fix later
       };
       
       // You can replace this mock response with an actual API request or database query.
