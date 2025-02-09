@@ -23,6 +23,11 @@
 		"matches": ["https://*/*"]
 	  }
 	],
+	"permissions": [
+		"storage",
+		"activeTab",
+		"tabs"
+	],
   "web_accessible_resources": [
     {
       "resources": ["images/gene_icon.png", "images/logo-large.png"],
