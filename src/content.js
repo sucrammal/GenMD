@@ -167,3 +167,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         console.log("User data saved to localStorage:", userData);
     }
 });
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.action === "sendMessageAndSearchPrompt") {
+        const { msg, search_prompt } = message.data;
+
+        console.log("Received reply and search prompt in content script:");
+        console.log("Message:", msg);
+        console.log("Search Prompt:", search_prompt);
+
+        // Perform actions with the received data
+        // For example, update the DOM or trigger a search
+        document.body.style.backgroundColor = "orange"; // Example action
+        console.log("Updated background color and logged search prompt.");
+
+        // Send a response back to the background script (optional)
+        sendResponse({ status: "success", message: "Appointment data received and processed." });
+    }
+});
