@@ -4,34 +4,29 @@ const openai = new OpenAI({
     apiKey: import.meta.env.VITE_OPENAPI_KEY // Use an environment variable
   });
 
+const userAreasOfConcern = ["mental health", "sexual health", "dental health"];
+
 const tools = [
     {
       type: "function", 
-      name: "find_health_services",
+      name: "emergency_services",
       description: "Recommends emergency services or suicide hotlines based on the user's request.",
-      parameters: {
-        type: "object",
-        properties: {
-          location: { type: "string", description: "The user's location to help find local services." },
-          insurance: { type: "string", description: "The user's insurance information." },
-          specialty: { type: "string", description: "The medical specialty or emergency service needed." },
-        },
-        required: ["location", "specialty"], 
-      },
     },
     {
       type: "function", 
       name: "book_appointment",
-      description: "Books a local medical or dental appointment with a healthcare provider.",
+      description: "Books a local medical appointment of some specialty with a healthcare provider covered under the user's insurance.",
       parameters: {
         type: "object",
         properties: {
-          location: { type: "string", description: "The location where the appointment should be booked." },
-          doctor: { type: "string", description: "The doctor's name or specialty." },
-          date: { type: "string", description: "The desired appointment date." },
-          time: { type: "string", description: "The desired appointment time." },
+          specialtyOrdoctor: { type: "string", description: "The doctor's name or specialty." },
+          areaOfConcern: {
+            type: "string",
+            enum: userAreasOfConcern, // Restrict the LLM to their selected userAreasOfConcern. 
+            description: "The user's indicated health concerns or priorities",
+          },
         },
-        required: ["location", "doctor", "date", "time"], 
+        required: ["specialtyOrdoctor", "areaOfConcern"], 
       },
     },
   ];
@@ -74,7 +69,7 @@ export async function toolInference(prompt: string) {
       }
       
       // Handle the response based on the function name returned by GPT
-      if (toolCall === "find_health_services") {
+      if (toolCall === "emergency_services") {
         const { location, insurance, specialty } = JSON.parse(toolArgs);
         return await searchHealthServices(location, insurance, specialty); // Async call to search for health services
       } else if (toolCall === "book_appointment") {
