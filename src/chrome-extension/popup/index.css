@@ -380,6 +380,24 @@ body {
     width: 100% !important; 
 }
 
-#upload-view-container input button {
-    background: red;
-}
+/* ADDITIONAL: BOUNCE ANIMATION ========================== */
+@keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    25% {
+      transform: translateY(-20px);
+    }
+    50% {
+      transform: translateY(0);
+    }
+    75% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  /* Slower bounce effect */
+  .bounce {
+    animation: bounce 1.5s ease-in-out infinite; /* 🔥 Increased to 1.5s */
+  }
+  

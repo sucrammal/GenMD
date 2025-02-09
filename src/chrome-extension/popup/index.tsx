@@ -12,11 +12,28 @@ export const Popup = () => {
   const typingGene = "https://i.imgur.com/sKwmAEL.png";
 
   // state: onboarding, dashboard: info, upload, chat
-  const [state, setState] = useState("upload"); 
+  const [state, setState] = useState("onboarding"); 
   const [dialogueText, setDialogueText] = useState("Hi, I’m Gene! I’m here to guide you in finding medical services covered by your plan or help you explore other available options.");
   const [gene, setGene] = useState(regularGene);
 
+  const bounceGene = () => {
+    const image = document.querySelector(".gene-overlay") as HTMLElement | null;
+    if (image) {
+      image.classList.remove("bounce"); // Remove class first
+      void image.offsetWidth; 
+      image.classList.add("bounce");
+  
+      setTimeout(() => {
+        image.classList.remove("bounce"); // Remove after 2 seconds
+      }, 2000);
+    }
+  };
+
   let renderedComponent;
+  
+  useEffect(() => {
+    bounceGene(); 
+  }, [state]); 
 
   switch(state){
     case 'onboarding': renderedComponent = <Onboarding onStateUpdate={() => setState("dashboard")}/>
