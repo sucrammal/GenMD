@@ -1,7 +1,8 @@
 import { OpenAI } from "openai";
 
 const openai = new OpenAI({
-    apiKey: import.meta.env.VITE_OPENAPI_KEY // Use an environment variable
+    apiKey: import.meta.env.VITE_OPENAPI_KEY, // Use an environment variable. 
+    dangerouslyAllowBrowser: true
   });
 
 // SAMPLE DATA: 
